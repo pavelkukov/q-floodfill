@@ -1,0 +1,109 @@
+{
+  "name": "q-floodfill",
+  "version": "0.0.1",
+  "description": "Optimized, non-recursive flood fill using a scan line search",
+  "main": "dist/bundle/index.bundle.js",
+  "module": "dist/index.js",
+  "jsnext:main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "lint": "eslint --ext .ts,.tsx ./src && eslint --ext .ts,.tsx ./stories",
+    "semantic-release": "semantic-release",
+    "start": "rimraf dist/**/* && concurrently --kill-others \"npm run webpack:watch\" \"npm run tsc:watch\"",
+    "build": "rimraf dist/**/* && npm run tsc:build && npm run webpack:build",
+    "webpack:build": "webpack --env.prod",
+    "tsc:build": "tsc",
+    "webpack:watch": "webpack --watch --env.prod",
+    "tsc:watch": "tsc --watch",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run format",
+      "git add *.ts",
+      "git add *.tsx",
+      "npm run lint"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "storybook-deployer": {
+    "gitUsername": "pavelkukov",
+    "gitEmail": "pavelkukov@gmail.com",
+    "commitMessage": "Deploy Storybook to GitHub Pages"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pavelkukov/q-floodfill.git"
+  },
+  "keywords": [
+    "flood-fill",
+    "floodfill",
+    "flood",
+    "fill",
+    "scan",
+    "line",
+    "flood",
+    "fill",
+    "canvas",
+    "imagedata"
+  ],
+  "author": "Pavel Kukov <pavelkukov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pavelkukov/q-floodfill/issues"
+  },
+  "homepage": "https://github.com/pavelkukov/q-floodfill#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.0.5",
+    "@semantic-release/npm": "^7.0.5",
+    "@semantic-release/release-notes-generator": "^9.0.1",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/react": "^5.3.18",
+    "@storybook/storybook-deployer": "^2.8.5",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.1.0",
+    "commitlint": "^8.3.5",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.3",
+    "prettier": "2.0.2",
+    "react": "^16.13.1",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^17.0.4",
+    "terser-webpack-plugin": "^2.3.5",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {}
+}

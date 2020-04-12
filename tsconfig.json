@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "esNext",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react",
+        "lib": ["dom", "esnext"],
+        "module": "es6",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "noEmit": false,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "dist/"
+    },
+    "include": ["./src/**/*"],
+    "exclude": ["node_modules"],
+    "files": ["./globals.d.ts"]
+}
