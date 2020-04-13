@@ -2,7 +2,7 @@ import {
     isSameColor,
     setColorAtPixel,
     getColorAtPixel,
-    hex2RGBA,
+    colorToRGBA,
     ColorRGBA,
 } from './util/colorUtils'
 
@@ -11,6 +11,9 @@ type PixelCoords = {
     y: number
 }
 
+/**
+ * [startX, endX, y, parentY]
+ */
 type LineQueued = [number, number, number, number]
 
 export default class FloodFill {
@@ -33,50 +36,11 @@ export default class FloodFill {
                   imageData.height,
               )
     }
-
-    public colorToRGBA(color: string): ColorRGBA {
-        if (color.indexOf('rgba') !== -1) {
-            const [
-                _,
-                r,
-                g,
-                b,
-                a,
-            ] = /rgba\(.*?([0-9]{1,3}).*?([0-9]{1,3}).*?([0-9]{1,3}).*?([0-9\.]{1,})/g.exec(
-                color,
-            )
-            return {
-                r: parseInt(r),
-                g: parseInt(g),
-                b: parseInt(b),
-                a: Math.ceil(parseFloat(a) * 255),
-            }
-        } else if (color.indexOf('rgb') !== -1) {
-            const [
-                _,
-                r,
-                g,
-                b,
-            ] = /rgb\(.*?([0-9]{1,3}).*?([0-9]{1,3}).*?([0-9]{1,3})/g.exec(
-                color,
-            )
-            return {
-                r: parseInt(r),
-                g: parseInt(g),
-                b: parseInt(b),
-                a: 255,
-            }
-        } else if (color.indexOf('#') !== -1) {
-            return hex2RGBA(color)
-        } else {
-            throw new Error(
-                'Unsupported color format. Please use CSS rgba, rgb, or HEX!',
-            )
-        }
-    }
-
+    /**
+     * color should be in CSS format - rgba, rgb, or HEX
+     */
     public fill(color: string, x: number, y: number, tolerance: number): void {
-        this._newColor = this.colorToRGBA(color)
+        this._newColor = colorToRGBA(color)
         this._replacedColor = getColorAtPixel(this.imageData, x, y)
         this._tolerance = tolerance
         if (isSameColor(this._replacedColor, this._newColor, this._tolerance)) {

@@ -86,3 +86,42 @@ export function hex2RGBA(hex: string, alpha = 255): ColorRGBA {
         a: alpha,
     }
 }
+
+export function colorToRGBA(color: string): ColorRGBA {
+    if (color.indexOf('rgba') !== -1) {
+        const [
+            _,
+            r,
+            g,
+            b,
+            a,
+        ] = /rgba\(.*?([0-9]{1,3}).*?([0-9]{1,3}).*?([0-9]{1,3}).*?([0-9\.]{1,})/g.exec(
+            color,
+        )
+        return {
+            r: parseInt(r),
+            g: parseInt(g),
+            b: parseInt(b),
+            a: Math.ceil(parseFloat(a) * 255),
+        }
+    } else if (color.indexOf('rgb') !== -1) {
+        const [
+            _,
+            r,
+            g,
+            b,
+        ] = /rgb\(.*?([0-9]{1,3}).*?([0-9]{1,3}).*?([0-9]{1,3})/g.exec(color)
+        return {
+            r: parseInt(r),
+            g: parseInt(g),
+            b: parseInt(b),
+            a: 255,
+        }
+    } else if (color.indexOf('#') !== -1) {
+        return hex2RGBA(color)
+    } else {
+        throw new Error(
+            'Unsupported color format. Please use CSS rgba, rgb, or HEX!',
+        )
+    }
+}

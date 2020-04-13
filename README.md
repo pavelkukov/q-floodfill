@@ -17,7 +17,6 @@ As far as I know from my benchmarks, this is the fastest flood fill implementati
 
 ~30-40ms to fill 800x660 canvas. For comparison, [wasm-flood-fill](https://www.npmjs.com/package/wasm-flood-fill) needs ~50-60ms for the same operation.
 
-
 ## 🧩 Installing
 
 ```shell
