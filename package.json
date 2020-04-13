@@ -28,6 +28,8 @@
       "npm run format",
       "git add *.ts",
       "git add *.tsx",
+      "git add *.json",
+      "git add *.md",
       "npm run lint"
     ]
   },

@@ -4,6 +4,8 @@ Optimized, non-recursive flood fill algorithm using a scan line search.
 
 Implemented in TypeScript. Zero dependencies and bundle size around 1.7k (gzipped and minified).
 
+Demo - https://pavelkukov.github.io/q-floodfill/
+
 ## 🙌 Acknowledgments
 
 The work here is heavily inspired from QuickFill algorithm by John R. Shaw.
@@ -13,7 +15,7 @@ https://www.codeproject.com/Articles/6017/QuickFill-An-Efficient-Flood-Fill-Algo
 
 As far as I know from my benchmarks, this is the fastest flood fill implementation for javascript.
 
-~30-40ms to fill 800x660 canvas. For comparison, (wasm-flood-fill)[https://www.npmjs.com/package/wasm-flood-fill] needs ~50-60ms for the same operation.
+~30-40ms to fill 800x660 canvas. For comparison, [https://www.npmjs.com/package/wasm-flood-fill](wasm-flood-fill) needs ~50-60ms for the same operation.
 
 
 ## 🧩 Installing
