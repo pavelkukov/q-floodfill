@@ -15,40 +15,26 @@ type LineQueued = [number, number, number, number]
 
 export default class FloodFill {
     public imageData: ImageData
-
-    public modifiedPixelsCount: number
+    public collectModifiedPixels = false
+    public modifiedPixelsCount = 0
+    public modifiedPixels: Set<string> = new Set()
 
     private _tolerance = 0
-    private _queue: Array<LineQueued>
+    private _queue: Array<LineQueued> = []
     private _replacedColor: ColorRGBA
     private _newColor: ColorRGBA
 
-    constructor(
-        imageData: ImageData,
-        color: string,
-        x: number,
-        y: number,
-        tolerance: number,
-    ) {
-        this.imageData = imageData
-        this.modifiedPixelsCount = 0
-        this._queue = []
-
-        this.fill(color, x, y, tolerance)
+    constructor(imageData: ImageData, mutateImageData = true) {
+        this.imageData = mutateImageData
+            ? imageData
+            : new ImageData(
+                  new Uint8ClampedArray(imageData.data),
+                  imageData.width,
+                  imageData.height,
+              )
     }
 
-    private addToQueue(line: LineQueued): void {
-        this._queue.push(line)
-    }
-
-    private popFromQueue(): LineQueued | null {
-        if (!this._queue.length) {
-            return null
-        }
-        return this._queue.pop()
-    }
-
-    private colorToRGBA(color: string): ColorRGBA {
+    public colorToRGBA(color: string): ColorRGBA {
         if (color.indexOf('rgba') !== -1) {
             const [
                 _,
@@ -89,7 +75,7 @@ export default class FloodFill {
         }
     }
 
-    private fill(color: string, x: number, y: number, tolerance: number): void {
+    public fill(color: string, x: number, y: number, tolerance: number): void {
         this._newColor = this.colorToRGBA(color)
         this._replacedColor = getColorAtPixel(this.imageData, x, y)
         this._tolerance = tolerance
@@ -99,6 +85,17 @@ export default class FloodFill {
 
         this.addToQueue([x, x, y, -1])
         this.fillQueue()
+    }
+
+    private addToQueue(line: LineQueued): void {
+        this._queue.push(line)
+    }
+
+    private popFromQueue(): LineQueued | null {
+        if (!this._queue.length) {
+            return null
+        }
+        return this._queue.pop()
     }
 
     private isValidTarget(pixel: PixelCoords | null): boolean {
@@ -172,6 +169,8 @@ export default class FloodFill {
     private setPixelColor(color: ColorRGBA, pixel: PixelCoords): void {
         setColorAtPixel(this.imageData, color, pixel.x, pixel.y)
         this.modifiedPixelsCount++
+        this.collectModifiedPixels &&
+            this.modifiedPixels.add(`${pixel.x}|${pixel.y}`)
     }
 
     private getPixelNeighbour(

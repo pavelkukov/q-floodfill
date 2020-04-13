@@ -8,7 +8,7 @@ module.exports = (env) => {
             'index.bundle': './src/index.ts',
         },
         output: {
-            path: path.resolve(__dirname, 'dist', 'bundle'),
+            path: path.resolve(__dirname, 'dist'),
             filename: '[name].js',
             libraryTarget: 'umd',
             library: 'q-floodfill',

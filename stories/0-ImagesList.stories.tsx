@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 
 import FloodFill from '../src'
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
@@ -148,9 +147,10 @@ export function CanvasDemo(): React.ReactElement {
                             canvas.current.height,
                         )
                         const start = new Date().getTime()
-                        const ff = new FloodFill(imgData, fillColor, eX, eY, 20)
+                        const ff = new FloodFill(imgData)
+                        ff.fill(fillColor, eX, eY, 0)
                         const time = new Date().getTime() - start
-                        context.putImageData(imgData, 0, 0)
+                        context.putImageData(ff.imageData, 0, 0)
                         setFillTime(time)
                         setPixelsCount(ff.modifiedPixelsCount)
                     }}
