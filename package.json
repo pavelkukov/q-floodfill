@@ -1,6 +1,6 @@
 {
   "name": "q-floodfill",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Optimized, non-recursive flood fill using a scan line search",
   "main": "dist/index.bundle.js",
   "types": "dist/index.d.ts",
