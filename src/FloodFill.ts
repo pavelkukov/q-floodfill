@@ -27,14 +27,8 @@ export default class FloodFill {
     private _replacedColor: ColorRGBA
     private _newColor: ColorRGBA
 
-    constructor(imageData: ImageData, mutateImageData = true) {
-        this.imageData = mutateImageData
-            ? imageData
-            : new ImageData(
-                  new Uint8ClampedArray(imageData.data),
-                  imageData.width,
-                  imageData.height,
-              )
+    constructor(imageData: ImageData) {
+        this.imageData = imageData
     }
     /**
      * color should be in CSS format - rgba, rgb, or HEX

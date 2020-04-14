@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "esNext",
+        "target": "es5",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "jsx": "react",

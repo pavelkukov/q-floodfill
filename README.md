@@ -2,7 +2,7 @@
 
 Optimized, non-recursive flood fill algorithm using a scan line search.
 
-Implemented in TypeScript. Zero dependencies and bundle size around 1.7k (gzipped and minified).
+Implemented in TypeScript. Zero dependencies and bundle size around 1.8k (gzipped and minified).
 
 Demo - https://pavelkukov.github.io/q-floodfill/
 
@@ -13,9 +13,7 @@ https://www.codeproject.com/Articles/6017/QuickFill-An-Efficient-Flood-Fill-Algo
 
 ## 📈 Performance
 
-As far as I know from my benchmarks, this is the fastest flood fill implementation for javascript.
-
-~30-40ms to fill 800x660 canvas. For comparison, [wasm-flood-fill](https://www.npmjs.com/package/wasm-flood-fill) needs ~50-60ms for the same operation.
+Needs ~30-40ms to fill 800x660 canvas. For comparison, [wasm-flood-fill](https://www.npmjs.com/package/wasm-flood-fill) needs ~50-60ms for the same operation.
 
 ## 🧩 Installing
 
@@ -42,14 +40,6 @@ context.putImageData(floodFill.imageData, 0, 0)
 
 **Options**
 
--   Prevent mutation of ImageData
-
-```typescript
-// If you wish to clone image data object
-// use the second argument in the constructor
-new FloodFill(imgData, false)
-```
-
 -   Get modified pixels count
 
 ```typescript
@@ -73,6 +63,19 @@ floodFill.fill(fillColor, x, y, 0)
 const pixels = floodFill.modifiedPixels
 // The type of modifiedPixels is Set<string>
 // Each point is stored in the format `${x}|${y}`
+```
+
+**Useful exports**
+
+```typescript
+{
+    isSameColor, // Compare two colors for equality with optional tolerance
+    setColorAtPixel, // Set pixel color by x, y coordinates in ImageData array
+    getColorAtPixel, // Get pixel color from ImageData array by x, y coordinates
+    colorToRGBA, // Convert CSS rgba, rgb or HEX color to RGBA color
+    hex2RGBA, // convert CSS hex to RGBA color. Alpha is 255 by default
+    ColorRGBA, // Type definition {r: number, g: number, b: number, a: number}
+}
 ```
 
 ## 🧾 Notes
