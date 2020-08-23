@@ -67,10 +67,7 @@ export default class FloodFill {
             return true
         }
 
-        return (
-            this._palette.findIndex((c: ColorRGBA) => isSameColor(c, pixel)) >
-            -1
-        )
+        return this._palette.findIndex((c) => isSameColor(c, pixel)) > -1
     }
 
     private isReplacedColor(pixel: PixelCoords | null): boolean {
