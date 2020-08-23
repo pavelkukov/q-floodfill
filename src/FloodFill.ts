@@ -16,6 +16,10 @@ type PixelCoords = {
  */
 type LineQueued = [number, number, number, number]
 
+interface FloodFillOptions {
+    palette?: string[]
+}
+
 export default class FloodFill {
     public imageData: ImageData
     public collectModifiedPixels = false
@@ -26,9 +30,11 @@ export default class FloodFill {
     private _queue: Array<LineQueued> = []
     private _replacedColor: ColorRGBA
     private _newColor: ColorRGBA
+    private _palette: ColorRGBA[]
 
-    constructor(imageData: ImageData) {
+    constructor(imageData: ImageData, options?: FloodFillOptions) {
         this.imageData = imageData
+        this._palette = options?.palette?.map(colorToRGBA)
     }
     /**
      * color should be in CSS format - rgba, rgb, or HEX
@@ -56,7 +62,18 @@ export default class FloodFill {
         return this._queue.pop()
     }
 
-    private isValidTarget(pixel: PixelCoords | null): boolean {
+    private isInPalette(pixel: ColorRGBA): boolean {
+        if (!this._palette) {
+            return true
+        }
+
+        return (
+            this._palette.findIndex((c: ColorRGBA) => isSameColor(c, pixel)) >
+            -1
+        )
+    }
+
+    private isReplacedColor(pixel: PixelCoords | null): boolean {
         if (pixel === null) {
             return
         }
@@ -64,8 +81,28 @@ export default class FloodFill {
         return isSameColor(this._replacedColor, pixelColor, this._tolerance)
     }
 
+    private isValidTarget(pixel: PixelCoords | null): boolean {
+        if (pixel === null) {
+            return
+        }
+        const pixelColor = getColorAtPixel(this.imageData, pixel.x, pixel.y)
+        return (
+            isSameColor(this._replacedColor, pixelColor, this._tolerance) ||
+            !this.isInPalette(pixelColor)
+        )
+    }
+
     private fillLineAt(x: number, y: number): [number, number] {
-        if (!this.isValidTarget({ x, y })) {
+        if (!this.isReplacedColor({ x, y })) {
+            const pixelColor = getColorAtPixel(this.imageData, x, y)
+            if (
+                // Ensure that we are not double-setting this pixel
+                !isSameColor(this._newColor, pixelColor, 0) &&
+                !this.isInPalette(pixelColor)
+            ) {
+                this.setPixelColor(this._newColor, { x, y })
+            }
+
             return [-1, -1]
         }
         this.setPixelColor(this._newColor, { x, y })
