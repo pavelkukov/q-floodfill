@@ -3,7 +3,7 @@
   "version": "1.3.0",
   "description": "Optimized, non-recursive flood fill using a scan line search",
   "main": "dist/index.bundle.js",
-  "module": "dist/react-dial-knob.esm.js",
+  "module": "dist/index.bundle.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
