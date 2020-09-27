@@ -18,6 +18,10 @@ type LineQueued = [number, number, number, number]
 
 export default class FloodFill {
     public imageData: ImageData
+    public isSameColor: typeof isSameColor
+    public setColorAtPixel: typeof setColorAtPixel
+    public getColorAtPixel: typeof getColorAtPixel
+    public colorToRGBA: typeof colorToRGBA
     public collectModifiedPixels = false
     public modifiedPixelsCount = 0
     public modifiedPixels: Set<string> = new Set()
@@ -29,15 +33,26 @@ export default class FloodFill {
 
     constructor(imageData: ImageData) {
         this.imageData = imageData
+        // Allow for custom implementations of the following methods
+        this.isSameColor = isSameColor
+        this.setColorAtPixel = setColorAtPixel
+        this.getColorAtPixel = getColorAtPixel
+        this.colorToRGBA = colorToRGBA
     }
     /**
      * color should be in CSS format - rgba, rgb, or HEX
      */
     public fill(color: string, x: number, y: number, tolerance: number): void {
-        this._newColor = colorToRGBA(color)
-        this._replacedColor = getColorAtPixel(this.imageData, x, y)
+        this._newColor = this.colorToRGBA(color)
+        this._replacedColor = this.getColorAtPixel(this.imageData, x, y)
         this._tolerance = tolerance
-        if (isSameColor(this._replacedColor, this._newColor, this._tolerance)) {
+        if (
+            this.isSameColor(
+                this._replacedColor,
+                this._newColor,
+                this._tolerance,
+            )
+        ) {
             return
         }
 
@@ -60,8 +75,16 @@ export default class FloodFill {
         if (pixel === null) {
             return
         }
-        const pixelColor = getColorAtPixel(this.imageData, pixel.x, pixel.y)
-        return isSameColor(this._replacedColor, pixelColor, this._tolerance)
+        const pixelColor = this.getColorAtPixel(
+            this.imageData,
+            pixel.x,
+            pixel.y,
+        )
+        return this.isSameColor(
+            this._replacedColor,
+            pixelColor,
+            this._tolerance,
+        )
     }
 
     private fillLineAt(x: number, y: number): [number, number] {
@@ -125,14 +148,14 @@ export default class FloodFill {
     }
 
     private setPixelColor(color: ColorRGBA, pixel: PixelCoords): void {
-        setColorAtPixel(this.imageData, color, pixel.x, pixel.y)
+        this.setColorAtPixel(this.imageData, color, pixel.x, pixel.y)
         this.modifiedPixelsCount++
         this.collectModifiedPixels &&
             this.modifiedPixels.add(`${pixel.x}|${pixel.y}`)
     }
 
     private getPixelNeighbour(
-        direction: string,
+        direction: 'left' | 'right',
         x: number,
         y: number,
     ): PixelCoords | null {
