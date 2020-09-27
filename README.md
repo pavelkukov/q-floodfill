@@ -65,6 +65,44 @@ const pixels = floodFill.modifiedPixels
 // Each point is stored in the format `${x}|${y}`
 ```
 
+-   Use custom color comparison function
+
+```typescript
+// Compare colors as difference in contrast
+// See: https://www.w3.org/TR/AERT/#color-contrast
+function isSameColor(a: ColorRGBA, b: ColorRGBA, tolerance = 0): boolean {
+    brightnessA = (299 * a.r + 587 * a.g + 114 * a.b) / 1000
+    brightnessB = (299 * b.r + 587 * b.g + 114 * b.b) / 1000
+    return Math.abs(brightnessA - brightnessB) <= tolerance
+}
+// Construct flood fill instance
+const floodFill = new FloodFill(imgData)
+// Set custom implementation
+floodFill.isSameColor = isSameColor
+// Modify image data
+floodFill.fill(fillColor, x, y, 0)
+```
+
+-   Use custom implementations of dependency functions
+
+```typescript
+import {
+    isSameColor,
+    setColorAtPixel,
+    getColorAtPixel,
+    colorToRGBA,
+} from './util/myColorFunctions'
+// Construct flood fill instance
+const floodFill = new FloodFill(imgData)
+// Set custom implementation
+floodFill.isSameColor = isSameColor
+floodFill.setColorAtPixel = setColorAtPixel
+floodFill.getColorAtPixel = getColorAtPixel
+floodFill.colorToRGBA = colorToRGBA
+// Modify image data
+floodFill.fill(fillColor, x, y, 0)
+```
+
 **Useful exports**
 
 ```typescript
